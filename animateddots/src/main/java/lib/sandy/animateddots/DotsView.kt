@@ -393,10 +393,10 @@ class DotsView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
             zoomAnimation.start()
     }
 
-    val maxVibrationRight: Int = (dotSpacing / 2).toInt()
-    val maxVibrationLeft = -1 * (dotSpacing / 2).toInt()
-    val maxTopValue = 30
-    val maxBottomValue = -30
+    private val maxVibrationRight: Int = (dotSpacing / 2).toInt()
+    private val maxVibrationLeft = -1 * (dotSpacing / 2).toInt()
+    private val maxTopValue = 30
+    private val maxBottomValue = -30
 
     private val propertyXPosition = PropertyValuesHolder.ofInt(
         "PROPERTY_POSITION_X",
@@ -486,7 +486,7 @@ class DotsView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
         }
 
         val removeAnimation = ValueAnimator().apply {
-            setValues(propertyXPosition, propertyYPosition,propertyRemoveAlpha)
+            setValues(propertyXPosition, propertyYPosition, propertyRemoveAlpha)
             duration = 1200
             doOnStart {
                 dotToTranslate.dotUIState = DotUIState.removing
@@ -502,7 +502,7 @@ class DotsView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
                 animatedYValue = animation.getAnimatedValue("PROPERTY_POSITION_Y") as Int
                 animatedXValue = animation.getAnimatedValue("PROPERTY_POSITION_X") as Int
                 val removeValue = animation.getAnimatedValue("PROPERTY_REMOVE_ALPHA") as Int
-                if(removeValue == 1){
+                if (removeValue == 1) {
                     dotToTranslate.paint.alpha = 255
                     dotToTranslate.paint = inActivePaint
                 }
