@@ -64,7 +64,7 @@ class DotsView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
     private val dotsDrawn
         get() = min(visibleDots, dotsCount)
 
-    private var activeDots = 0
+    private var activeDots = 50
         set(value) {
             if (dotsCount > activeDots) {
                 Log.d(LOG_TAG, "active dots count is greater than dots count, setting to active dots to dotsCount")
@@ -176,7 +176,7 @@ class DotsView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
     private val ripplePaint: Paint by lazy {
         Paint(Paint.ANTI_ALIAS_FLAG).apply {
             color = activeColor
-            strokeWidth = 2f
+            strokeWidth = 4f
             style = Paint.Style.STROKE
         }
     }
@@ -423,7 +423,22 @@ class DotsView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
         maxTopValue,
         maxBottomValue,
         maxBottomValue,
-        maxBottomValue/2, maxBottomValue/4
+        maxBottomValue, 0
+    )
+
+    private val propertyRemoveAlpha = PropertyValuesHolder.ofInt(
+        "PROPERTY_REMOVE_ALPHA",
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1
     )
 
     fun removeCounter() {
@@ -471,7 +486,7 @@ class DotsView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
         }
 
         val removeAnimation = ValueAnimator().apply {
-            setValues(propertyXPosition, propertyYPosition)
+            setValues(propertyXPosition, propertyYPosition,propertyRemoveAlpha)
             duration = 1200
             doOnStart {
                 dotToTranslate.dotUIState = DotUIState.removing
@@ -479,19 +494,29 @@ class DotsView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
                 dotToTranslate.paint = removingPaint
             }
             addUpdateListener { animation ->
+
+                dotToTranslate.dotUIState = DotUIState.removing
+                removingPaint.alpha = 255
+                dotToTranslate.paint = removingPaint
+
                 animatedYValue = animation.getAnimatedValue("PROPERTY_POSITION_Y") as Int
                 animatedXValue = animation.getAnimatedValue("PROPERTY_POSITION_X") as Int
+                val removeValue = animation.getAnimatedValue("PROPERTY_REMOVE_ALPHA") as Int
+                if(removeValue == 1){
+                    dotToTranslate.paint.alpha = 255
+                    dotToTranslate.paint = inActivePaint
+                }
                 invalidate()
             }
             doOnEnd {
                 dotToTranslate.paint.alpha = 255
-//                dotToTranslate.paint = inActivePaint
+                dotToTranslate.paint = inActivePaint
                 if (isTailShown && (activeDots >= dotsDrawn)) {
                     transitionAnimationLeft.start()
-                }else{
+                } /*else {
                     dotToTranslate.paint = inActivePaint
                     dotToTranslate.dotUIState = DotUIState.normal
-                }
+                }*/
 //                invalidate()
             }
             doOnCancel {
