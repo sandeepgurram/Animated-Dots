@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="DotsView">
+        <attr name="activeColor" format="color" />
+        <attr name="inActiveColor" format="color" />
+        <attr name="removeColor" format="color" />
+        <attr name="visibleDots" format="integer" />
+        <attr name="maxDots" format="integer" />
+        <attr name="dotSize" format="dimension" />
+        <attr name="smallDotSize" format="dimension" />
+        <attr name="dotsSpacing" format="dimension" />
+
+    </declare-styleable>
+</resources>
