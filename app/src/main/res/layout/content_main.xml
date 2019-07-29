@@ -6,6 +6,7 @@
         xmlns:custom="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#000"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:showIn="@layout/activity_main"
         tools:context=".MainActivity">
@@ -14,11 +15,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Hello World!"
+            android:textColor="#fff"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            android:id="@+id/textView" android:layout_marginBottom="8dp"
+            android:id="@+id/textView" android:layout_marginBottom="32dp"
             app:layout_constraintBottom_toTopOf="@+id/dots"
-            android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent"/>
+    />
 
     <lib.sandy.animateddots.DotsView
             android:layout_width="wrap_content"
@@ -37,31 +39,79 @@
             custom:maxDots="100"
             custom:visibleDots="4"
             custom:dotSize="12dp"
-            custom:dotsSpacing="6dp"
-            custom:activeColor="#9C27B0"
-            custom:inActiveColor="#000"
+            custom:dotsSpacing="8dp"
+            custom:activeColor="#7ED321"
+            custom:inActiveColor="#ADADAD"
             custom:removeColor="#F44336"
-    />
+            app:layout_constraintHorizontal_bias="0.501" app:layout_constraintVertical_bias="0.189"/>
+
+    <Button android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="minus"
+            android:id="@+id/minus"
+            app:layout_constraintEnd_toStartOf="@+id/dots"
+            android:layout_marginEnd="8dp" android:layout_marginRight="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginLeft="8dp" android:layout_marginStart="8dp"
+            app:layout_constraintHorizontal_bias="1.0" app:layout_constraintTop_toBottomOf="@+id/dots"
+            android:layout_marginTop="24dp"/>
 
     <Button android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="plus"
             android:id="@+id/plus"
-            app:layout_constraintTop_toTopOf="@+id/dots"
-            app:layout_constraintEnd_toStartOf="@+id/dots"
-            android:layout_marginEnd="8dp" android:layout_marginRight="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/dots"
-            app:layout_constraintVertical_bias="0.0" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginLeft="8dp" android:layout_marginStart="8dp"/>
-    <Button android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="minus"
-
-            android:id="@+id/minus"
             android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp" app:layout_constraintTop_toTopOf="@+id/dots"
+            android:layout_marginStart="8dp"
             app:layout_constraintStart_toEndOf="@+id/dots"
             app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp" android:layout_marginRight="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/dots"/>
+            app:layout_constraintTop_toBottomOf="@+id/dots" android:layout_marginTop="24dp"
+            app:layout_constraintHorizontal_bias="0.0"/>
+
+
+    <lib.sandy.animateddots.DotsView2
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:id="@+id/dots2"
+            custom:maxDots="10"
+            custom:visibleDots="4"
+            custom:dotSize="12dp"
+            custom:dotsSpacing="6dp"
+            custom:activeColor="#7ED321"
+            custom:inActiveColor="#fff"
+            custom:removeColor="#F44336"
+            app:layout_constraintVertical_bias="0.69"/>
+    <Button
+            android:text="minus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/minus2"
+            app:layout_constraintTop_toBottomOf="@+id/dots2" app:layout_constraintEnd_toStartOf="@+id/dots2"
+            android:layout_marginEnd="8dp" android:layout_marginRight="8dp" android:layout_marginTop="24dp"/>
+    <Button
+            android:text="Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/plus2"
+            app:layout_constraintTop_toBottomOf="@+id/dots2" app:layout_constraintStart_toEndOf="@+id/dots2"
+            android:layout_marginLeft="8dp" android:layout_marginStart="8dp" android:layout_marginTop="24dp"/>
+    <TextView
+            android:text="TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView2"
+            app:layout_constraintBottom_toTopOf="@+id/dots2" android:layout_marginBottom="32dp"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
