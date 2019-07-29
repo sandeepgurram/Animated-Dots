@@ -228,7 +228,7 @@ class DotsView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
                     canvas?.drawCircle(xPos.minus(animatedXValue), initialY, dot.size / 2, dot.paint)
                 }
                 DotUIState.adding -> {
-                    canvas?.drawCircle(xPos, desiredHeight / 2, dotSize / 2, zoomAnimPaint)
+                    canvas?.drawCircle(xPos, desiredHeight / 2, dot.size / 2, zoomAnimPaint)
                 }
                 else -> canvas?.drawCircle(xPos - xTranslation, desiredHeight / 2, dot.size / 2, dot.paint)
             }
