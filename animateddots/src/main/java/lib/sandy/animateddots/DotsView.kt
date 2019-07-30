@@ -423,22 +423,23 @@ class DotsView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
         maxTopValue,
         maxBottomValue,
         maxBottomValue,
-        maxBottomValue, 0
+        maxBottomValue,
+        maxBottomValue
     )
 
-    private val propertyRemoveAlpha = PropertyValuesHolder.ofInt(
-        "PROPERTY_REMOVE_ALPHA",
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        1,
-        1
+    private val propertyReappearSize = PropertyValuesHolder.ofFloat(
+        "PROPERTY_REAPPEAR_SIZE",
+        0f,
+        0f,
+        0f,
+        0f,
+        0f,
+        0f,
+        0f,
+        0f,
+        0f,
+        1f,
+        dotSize
     )
 
     fun removeCounter() {
@@ -486,7 +487,7 @@ class DotsView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
         }
 
         val removeAnimation = ValueAnimator().apply {
-            setValues(propertyXPosition, propertyYPosition, propertyRemoveAlpha)
+            setValues(propertyXPosition, propertyYPosition, propertyReappearSize)
             duration = 1200
             doOnStart {
                 dotToTranslate.dotUIState = DotUIState.removing
@@ -501,9 +502,10 @@ class DotsView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
 
                 animatedYValue = animation.getAnimatedValue("PROPERTY_POSITION_Y") as Int
                 animatedXValue = animation.getAnimatedValue("PROPERTY_POSITION_X") as Int
-                val removeValue = animation.getAnimatedValue("PROPERTY_REMOVE_ALPHA") as Int
-                if (removeValue == 1) {
-                    dotToTranslate.paint.alpha = 255
+                val reAppearSize = animation.getAnimatedValue("PROPERTY_REAPPEAR_SIZE") as Float
+                if (reAppearSize != 0f) {
+                    animatedYValue = 0
+                    dotToTranslate.size = reAppearSize
                     dotToTranslate.paint = inActivePaint
                 }
                 invalidate()
