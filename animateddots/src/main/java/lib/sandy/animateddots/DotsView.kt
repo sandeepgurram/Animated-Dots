@@ -513,6 +513,7 @@ class DotsView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
             doOnEnd {
                 dotToTranslate.paint.alpha = 255
                 dotToTranslate.paint = inActivePaint
+                dotToTranslate.dotUIState = DotUIState.normal
                 if (isTailShown && (activeDots >= dotsDrawn)) {
                     transitionAnimationLeft.start()
                 } /*else {
