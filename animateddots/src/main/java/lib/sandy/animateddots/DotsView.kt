@@ -1,5 +1,6 @@
 package lib.sandy.animateddots
 
+import android.animation.Animator
 import android.animation.PropertyValuesHolder
 import android.animation.ValueAnimator
 import android.content.Context
@@ -16,7 +17,7 @@ import kotlin.math.min
 import kotlin.reflect.KProperty
 
 class DotsView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) :
-    View(context, attrs, defStyleAttr) {
+        View(context, attrs, defStyleAttr) {
 
     private val LOG_TAG = "anim-dots"
 
@@ -294,11 +295,21 @@ class DotsView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
         val transitionAnimationRight = ValueAnimator().apply {
             setValues(propertyRadius, propertyXTranslationRight, propertyLastDotSize, propertyExitDotSize)
             duration = translationTime
-            doOnCancel {
-                isInAddAnimationState = false
-                xTranslation = 0f
-                invalidate()
-            }
+            addListener(object : Animator.AnimatorListener {
+
+                override fun onAnimationRepeat(animation: Animator?) {}
+
+                override fun onAnimationEnd(animation: Animator?) {}
+
+                override fun onAnimationCancel(animation: Animator?) {
+                    isInAddAnimationState = false
+                    xTranslation = 0f
+                    invalidate()
+                }
+
+                override fun onAnimationStart(animation: Animator?) {}
+
+            })
         }
 
         val rippleAnimation = ValueAnimator().apply {
@@ -311,16 +322,25 @@ class DotsView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
                 ripplePaint.alpha = animation.getAnimatedValue("PROPERTY_RIPPLE_ALPHA") as Int
                 invalidate()
             }
-            doOnCancel {
-                dotToTranslate.dotUIState = DotUIState.normal
-                ripplePaint.alpha = 0
-                rippleSize = 0f
-            }
-            doOnEnd {
-                dotToTranslate.dotUIState = DotUIState.normal
-                ripplePaint.alpha = 0
-                rippleSize = 0f
-            }
+            addListener(object : Animator.AnimatorListener {
+
+                override fun onAnimationRepeat(animation: Animator?) {}
+
+                override fun onAnimationEnd(animation: Animator?) {
+                    dotToTranslate.dotUIState = DotUIState.normal
+                    ripplePaint.alpha = 0
+                    rippleSize = 0f
+                }
+
+                override fun onAnimationCancel(animation: Animator?) {
+                    dotToTranslate.dotUIState = DotUIState.normal
+                    ripplePaint.alpha = 0
+                    rippleSize = 0f
+                }
+
+                override fun onAnimationStart(animation: Animator?) {}
+
+            })
         }
 
         val zoomAnimation = ValueAnimator().apply {
@@ -341,19 +361,29 @@ class DotsView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
                 }
                 invalidate()
             }
-            doOnCancel {
-                dotToTranslate.paint = activePaint
-                dotToTranslate.dotUIState = DotUIState.normal
-                zoomAnimPaint.alpha = 255
-                dotToTranslate.size = dotSize
-            }
-            doOnEnd {
-                rippleAnimation.start()
-                dotToTranslate.paint = activePaint
-                dotToTranslate.dotUIState = DotUIState.normal
-                zoomAnimPaint.alpha = 255
-                dotToTranslate.size = dotSize
-            }
+            addListener(object : Animator.AnimatorListener {
+
+                override fun onAnimationRepeat(animation: Animator?) {}
+
+                override fun onAnimationEnd(animation: Animator?) {
+                    rippleAnimation.start()
+                    dotToTranslate.paint = activePaint
+                    dotToTranslate.dotUIState = DotUIState.normal
+                    zoomAnimPaint.alpha = 255
+                    dotToTranslate.size = dotSize
+                }
+
+                override fun onAnimationCancel(animation: Animator?) {
+                    dotToTranslate.paint = activePaint
+                    dotToTranslate.dotUIState = DotUIState.normal
+                    zoomAnimPaint.alpha = 255
+                    dotToTranslate.size = dotSize
+                }
+
+                override fun onAnimationStart(animation: Animator?) {}
+
+            })
+
         }
 
 
@@ -367,23 +397,32 @@ class DotsView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
                 isInAddAnimationState = true
                 invalidate()
             }
-            doOnCancel {
-                dotsList.last().size = smallDotSize
-                dotsList[1].size = dotSize
-                xTranslation = 0f
-                dotToTranslate.dotUIState = DotUIState.normal
-                isInAddAnimationState = false
-                invalidate()
-            }
-            doOnEnd {
-                dotsList.last().size = smallDotSize
-                dotsList[1].size = dotSize
-                dotToTranslate.dotUIState = DotUIState.normal
-                isInAddAnimationState = false
-                xTranslation = 0f
-                zoomAnimation.start()
-                invalidate()
-            }
+            addListener(object : Animator.AnimatorListener {
+
+                override fun onAnimationRepeat(animation: Animator?) {}
+
+                override fun onAnimationEnd(animation: Animator?) {
+                    dotsList.last().size = smallDotSize
+                    dotsList[1].size = dotSize
+                    dotToTranslate.dotUIState = DotUIState.normal
+                    isInAddAnimationState = false
+                    xTranslation = 0f
+                    zoomAnimation.start()
+                    invalidate()
+                }
+
+                override fun onAnimationCancel(animation: Animator?) {
+                    dotsList.last().size = smallDotSize
+                    dotsList[1].size = dotSize
+                    xTranslation = 0f
+                    dotToTranslate.dotUIState = DotUIState.normal
+                    isInAddAnimationState = false
+                    invalidate()
+                }
+
+                override fun onAnimationStart(animation: Animator?) {}
+
+            })
         }
 
         invalidate()
@@ -458,11 +497,6 @@ class DotsView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
         val transitionAnimationLeft = ValueAnimator().apply {
             setValues(propertyRadius, propertyXTranslationRight, propertyLastDotSize, propertyExitDotSize)
             duration = translationTime
-            doOnStart {
-                dotToTranslate.paint.alpha = 255
-                dotToTranslate.paint = inActivePaint
-                dotToTranslate.dotUIState = DotUIState.normal
-            }
             addUpdateListener { animation ->
                 //            dotToTranslate.size = animation.getAnimatedValue("PROPERTY_RADIUS") as Float
                 xTranslation = -1 * animation.getAnimatedValue("PROPERTY_X") as Float
@@ -470,30 +504,38 @@ class DotsView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
                 dotsList[dotsList.size - 2].size = animation.getAnimatedValue("PROPERTY_EXIT_DOT_SIZE") as Float
                 invalidate()
             }
-            doOnEnd {
-                dotsList.first().size = smallDotSize
-                dotsList[dotsList.size - 2].size = dotSize
-                dotToTranslate.paint = activePaint
-                xTranslation = 0f
-                invalidate()
-            }
-            doOnCancel {
-                dotsList[dotsList.size - 2].size = dotSize
-                dotsList.first().size = smallDotSize
-                dotToTranslate.paint = activePaint
-                xTranslation = 0f
-                invalidate()
-            }
+            addListener(object : Animator.AnimatorListener {
+
+                override fun onAnimationRepeat(animation: Animator?) {}
+
+                override fun onAnimationEnd(animation: Animator?) {
+                    dotsList.first().size = smallDotSize
+                    dotsList[dotsList.size - 2].size = dotSize
+                    dotToTranslate.paint = activePaint
+                    xTranslation = 0f
+                    invalidate()
+                }
+
+                override fun onAnimationCancel(animation: Animator?) {
+                    dotsList[dotsList.size - 2].size = dotSize
+                    dotsList.first().size = smallDotSize
+                    dotToTranslate.paint = activePaint
+                    xTranslation = 0f
+                    invalidate()
+                }
+
+                override fun onAnimationStart(animation: Animator?) {
+                    dotToTranslate.paint.alpha = 255
+                    dotToTranslate.paint = inActivePaint
+                    dotToTranslate.dotUIState = DotUIState.normal
+                }
+
+            })
         }
 
         val removeAnimation = ValueAnimator().apply {
             setValues(propertyXPosition, propertyYPosition, propertyReappearSize)
             duration = 1200
-            doOnStart {
-                dotToTranslate.dotUIState = DotUIState.removing
-                removingPaint.alpha = 255
-                dotToTranslate.paint = removingPaint
-            }
             addUpdateListener { animation ->
 
                 dotToTranslate.dotUIState = DotUIState.removing
@@ -510,24 +552,32 @@ class DotsView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
                 }
                 invalidate()
             }
-            doOnEnd {
-                dotToTranslate.paint.alpha = 255
-                dotToTranslate.paint = inActivePaint
-                dotToTranslate.dotUIState = DotUIState.normal
-                if (isTailShown && (activeDots >= dotsDrawn)) {
-                    transitionAnimationLeft.start()
-                } /*else {
+            addListener(object : Animator.AnimatorListener {
+
+                override fun onAnimationRepeat(animation: Animator?) {}
+
+                override fun onAnimationEnd(animation: Animator?) {
+                    dotToTranslate.paint.alpha = 255
                     dotToTranslate.paint = inActivePaint
                     dotToTranslate.dotUIState = DotUIState.normal
-                }*/
-//                invalidate()
-            }
-            doOnCancel {
-                dotToTranslate.paint.alpha = 255
-                dotToTranslate.paint = inActivePaint
-                dotToTranslate.dotUIState = DotUIState.normal
-//                invalidate()
-            }
+                    if (isTailShown && (activeDots >= dotsDrawn)) {
+                        transitionAnimationLeft.start()
+                    }
+                }
+
+                override fun onAnimationCancel(animation: Animator?) {
+                    dotToTranslate.paint.alpha = 255
+                    dotToTranslate.paint = inActivePaint
+                    dotToTranslate.dotUIState = DotUIState.normal
+                }
+
+                override fun onAnimationStart(animation: Animator?) {
+                    dotToTranslate.dotUIState = DotUIState.removing
+                    removingPaint.alpha = 255
+                    dotToTranslate.paint = removingPaint
+                }
+
+            })
         }
 
         activeDots--

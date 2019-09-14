@@ -276,11 +276,11 @@ class DotsView2 @JvmOverloads constructor(context: Context, attrs: AttributeSet?
         val transitionAnimationRight = ValueAnimator().apply {
             setValues(propertyRadius, propertyXTranslationRight, propertyLastDotSize, propertyExitDotSize)
             duration = 300
-            doOnCancel {
+            /*doOnCancel {
                 isInAddAnimationState = false
                 xTranslation = 0f
                 invalidate()
-            }
+            }*/
         }
 
         val zoomAnimation = ValueAnimator().apply {
@@ -301,7 +301,7 @@ class DotsView2 @JvmOverloads constructor(context: Context, attrs: AttributeSet?
                 }
                 invalidate()
             }
-            doOnCancel {
+            /*doOnCancel {
                 dotToTranslate.paint = activePaint
                 dotToTranslate.dotUIState = DotUIState.normal
                 zoomAnimPaint.alpha = 255
@@ -312,7 +312,7 @@ class DotsView2 @JvmOverloads constructor(context: Context, attrs: AttributeSet?
                 dotToTranslate.dotUIState = DotUIState.normal
                 zoomAnimPaint.alpha = 255
                 dotToTranslate.size = dotSize
-            }
+            }*/
         }
 
 
@@ -326,7 +326,7 @@ class DotsView2 @JvmOverloads constructor(context: Context, attrs: AttributeSet?
                 isInAddAnimationState = true
                 invalidate()
             }
-            doOnCancel {
+            /*doOnCancel {
                 dotsList.last().size = smallDotSize
                 dotsList[1].size = dotSize
                 xTranslation = 0f
@@ -342,7 +342,7 @@ class DotsView2 @JvmOverloads constructor(context: Context, attrs: AttributeSet?
                 xTranslation = 0f
                 zoomAnimation.start()
                 invalidate()
-            }
+            }*/
         }
 
         invalidate()
@@ -398,10 +398,10 @@ class DotsView2 @JvmOverloads constructor(context: Context, attrs: AttributeSet?
         val transitionAnimationLeft = ValueAnimator().apply {
             setValues(propertyRadius, propertyXTranslationRight, propertyLastDotSize, propertyExitDotSize)
             duration = 400
-            doOnCancel {
+            /*doOnCancel {
                 xTranslation = 0f
                 invalidate()
-            }
+            }*/
         }
 
         transitionAnimationLeft.apply {
@@ -412,7 +412,7 @@ class DotsView2 @JvmOverloads constructor(context: Context, attrs: AttributeSet?
                 dotsList[dotsList.size - 2].size = animation.getAnimatedValue("PROPERTY_EXIT_DOT_SIZE") as Float
                 invalidate()
             }
-            doOnEnd {
+            /*doOnEnd {
                 dotsList.first().size = smallDotSize
                 dotsList[dotsList.size - 2].size = dotSize
                 dotToTranslate.paint = activePaint
@@ -425,7 +425,7 @@ class DotsView2 @JvmOverloads constructor(context: Context, attrs: AttributeSet?
                 dotToTranslate.paint = activePaint
                 xTranslation = 0f
                 invalidate()
-            }
+            }*/
         }
 
 
@@ -439,7 +439,7 @@ class DotsView2 @JvmOverloads constructor(context: Context, attrs: AttributeSet?
                 animatedXValue = animation.getAnimatedValue("PROPERTY_POSITION_X") as Int
                 invalidate()
             }
-            doOnEnd {
+            /*doOnEnd {
                 dotToTranslate.paint = inActivePaint
                 dotToTranslate.dotUIState = DotUIState.normal
                 if (isTailShown && (activeDots >= dotsDrawn))
@@ -451,7 +451,7 @@ class DotsView2 @JvmOverloads constructor(context: Context, attrs: AttributeSet?
                 dotToTranslate.dotUIState = DotUIState.normal
                 invalidate()
             }
-        }
+*/        }
 
         activeDots--
         if (activeDots < dotsDrawn)
